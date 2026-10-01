@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Phiếu lệnh Export InDesign</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Be+Vietnam+Pro:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: phiếu lệnh sản xuất — form điền bên trái, phiếu xuất ra dính bên phải; một cột trên điện thoại */
+:root{
+  --paper:#f5f7f8; --sheet:#ffffff; --ink:#15212a; --muted:#5b6b76; --rule:#d5dde2;
+  --accent:#0b7aa3; --accent-ink:#ffffff; --accent-soft:#e3f2f8; --mark:#c2185b;
+  --display:"Archivo","Be Vietnam Pro",system-ui,sans-serif;
+  --body:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0f1519; --sheet:#162026; --ink:#e4ebef; --muted:#93a4ae; --rule:#2a3740;
+  --accent:#4fc0e6; --accent-ink:#06222d; --accent-soft:#16323e; --mark:#f06292; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0f1519; --sheet:#162026; --ink:#e4ebef; --muted:#93a4ae; --rule:#2a3740;
+  --accent:#4fc0e6; --accent-ink:#06222d; --accent-soft:#16323e; --mark:#f06292; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 var(--body);padding-inline:16px;padding-block:28px 48px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
+header{display:flex;gap:16px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.reg{width:34px;height:34px;flex:none;border:2px solid var(--mark);border-radius:50%;position:relative;margin-top:4px}
+.reg::before,.reg::after{content:"";position:absolute;background:var(--mark)}
+.reg::before{left:50%;top:-8px;bottom:-8px;width:2px;transform:translateX(-50%)}
+.reg::after{top:50%;left:-8px;right:-8px;height:2px;transform:translateY(-50%)}
+.head{display:flex;gap:16px;min-width:0}
+h1{font:800 clamp(24px,4vw,34px)/1.1 var(--display);letter-spacing:-.01em;margin:0 0 6px;text-wrap:balance}
+.lede{margin:0;color:var(--muted);max-width:62ch}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+button{font:600 14px var(--body);border-radius:6px;padding:9px 14px;cursor:pointer;border:1px solid var(--rule);background:var(--sheet);color:var(--ink)}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,.seg label:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+
+.grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+
+form{display:grid;gap:18px;min-width:0}
+fieldset{margin:0;border:1px solid var(--rule);background:var(--sheet);border-radius:8px;padding:0;min-width:0}
+legend{display:contents}
+.sec-h{display:flex;gap:12px;align-items:baseline;padding:14px 18px;border-bottom:1px solid var(--rule)}
+.sec-k{font:600 12px var(--mono);color:var(--mark);letter-spacing:.06em}
+.sec-t{font:700 17px var(--display)}
+.sec-b{padding:16px 18px;display:grid;gap:16px}
+.field{display:grid;gap:6px;min-width:0}
+.field>label,.lab{font-weight:600;font-size:14px}
+.hint{font-size:12.5px;color:var(--muted)}
+.row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+input[type=text],input[type=number],select,textarea{width:100%;font:14px var(--body);color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:9px 11px}
+input.mono{font-family:var(--mono);font-size:13px}
+textarea{min-height:70px;resize:vertical}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg label{display:flex;gap:7px;align-items:center;border:1px solid var(--rule);border-radius:6px;padding:7px 11px;font-size:14px;cursor:pointer;background:var(--paper)}
+.seg input{accent-color:var(--accent);margin:0}
+.seg label:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.sub{border-left:3px solid var(--accent);padding-left:14px;display:grid;gap:16px}
+.sub-t{font:700 13px var(--display);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+aside{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);display:grid;gap:12px;min-width:0}
+@media (max-width:900px){aside{position:static}}
+.ticket{background:var(--sheet);border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.ticket-h{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px dashed var(--rule)}
+.ticket-h b{font:700 15px var(--display)}
+.ticket-h span{font:12px var(--mono);color:var(--muted)}
+pre{margin:0;padding:16px;font:12.5px/1.6 var(--mono);white-space:pre-wrap;word-break:break-word;max-height:62vh;overflow:auto;font-variant-numeric:tabular-nums}
+.name-preview{font:13px var(--mono);background:var(--accent-soft);border-radius:6px;padding:8px 11px;word-break:break-all}
+.btns{display:flex;gap:8px;flex-wrap:wrap}.btns button{flex:1 1 160px}
+.toast{font-size:13px;color:var(--accent);min-height:1.3em}
+.note{font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){button{transition:filter .15s}button:hover{filter:brightness(1.06)}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="head">
+      <div class="reg" aria-hidden="true"></div>
+      <div>
+        <h1>Phiếu lệnh Export InDesign</h1>
+        <p class="lede">Điền thông số cho một bộ script tự động export. Điền xong bấm <b>Tải phiếu về</b> để lưu thành file, gửi file đó cho Claude để tạo script. Các ô đang điền sẵn theo bộ export ONLINE anh đang dùng.</p>
+      </div>
+    </div>
+    <div class="actions">
+      <button type="button" id="btn-reset">Điền lại mặc định</button>
+    </div>
+  </header>
+
+  <div class="grid">
+    <form id="f" autocomplete="off"></form>
+    <aside>
+      <div class="ticket">
+        <div class="ticket-h"><b>Phiếu yêu cầu</b><span id="count"></span></div>
+        <pre id="out"></pre>
+      </div>
+      <div class="btns"><button type="button" class="primary" id="btn-dl">Tải phiếu về (.txt)</button><button type="button" id="btn-copy">Sao chép phiếu</button></div>
+      <div class="toast" id="toast" role="status"></div>
+      <p class="note">Bản nháp được lưu trên trình duyệt này, mở lại vẫn còn.</p>
+    </aside>
+  </div>
+</div>
+
+<script>
+// ---------- Định nghĩa các mục của phiếu ----------
+const has = (v, x) => Array.isArray(v) && v.includes(x);
+const S = [
+ {k:"A", t:"Thông tin chung", f:[
+  {id:"job", l:"Tên bộ script", type:"text", d:"Export ONLINE", h:"Để phân biệt khi có nhiều bộ, VD: Export ONLINE, Export in offset"},
+  {id:"idver", l:"Phiên bản InDesign", type:"seg", o:["2024","2025","2026"], d:"2025"},
+  {id:"installdir", l:"Thư mục đặt script trên máy", type:"text", mono:1, d:"E:\\export_online"},
+ ]},
+ {k:"B", t:"Nguồn file", f:[
+  {id:"root", l:"Thư mục gốc chứa file .indd", type:"text", mono:1, d:"", h:"Có thể ghi nhiều thư mục, mỗi dòng một đường dẫn", area:1},
+  {id:"recurse", l:"Quét cả thư mục con", type:"seg", o:["Có","Không"], d:"Có"},
+  {id:"filter", l:"Chỉ lấy file có tên", type:"text", d:"Tất cả file .indd", h:"VD: bắt đầu bằng 'Chuong', chứa chữ 'FINAL'"},
+  {id:"exclude", l:"Bỏ qua thư mục có tên", type:"text", d:"", h:"VD: _old, Backup, Links. Để trống nếu không cần"},
+ ]},
+ {k:"C", t:"Định dạng xuất", f:[
+  {id:"formats", l:"Xuất ra định dạng nào", type:"multi", o:["Interactive PDF","Print PDF","JPG","PNG"], d:["Interactive PDF"], h:"Chọn nhiều nếu mỗi file cần ra nhiều bản"},
+  {group:"Interactive PDF", show:v=>has(v.formats,"Interactive PDF"), f:[
+   {id:"ia_layout", l:"Dàn trang", type:"seg", o:["Từng trang (Pages)","Trải đôi (Spreads)"], d:"Từng trang (Pages)"},
+   {id:"ia_range", l:"Phạm vi trang", type:"text", d:"Tất cả", h:"VD: Tất cả, hoặc 1-10, 15"},
+   {id:"ia_res", l:"Độ phân giải ảnh (ppi)", type:"seg", o:["72","96","144","300"], d:"144"},
+   {id:"ia_q", l:"Chất lượng JPEG", type:"seg", o:["Thấp","Trung bình","Cao","Tối đa"], d:"Cao"},
+   {id:"ia_view", l:"Mở PDF ở chế độ toàn màn hình", type:"seg", o:["Không","Có"], d:"Không"},
+   {id:"ia_extra", l:"Thông số khác", type:"text", d:"", h:"VD: giữ hiệu ứng chuyển trang, nhúng layer, thumbnail…"},
+  ]},
+  {group:"Print PDF", show:v=>has(v.formats,"Print PDF"), f:[
+   {id:"pp_preset", l:"Tên PDF preset hoặc chuẩn", type:"text", d:"PDF/X-1a:2001", h:"Ghi đúng tên preset trong File › Adobe PDF Presets, hoặc chuẩn nhà in yêu cầu"},
+   {id:"pp_layout", l:"Dàn trang", type:"seg", o:["Từng trang (Pages)","Trải đôi (Spreads)"], d:"Từng trang (Pages)"},
+   {id:"pp_bleed", l:"Bleed", type:"seg", o:["Theo file InDesign","Tự đặt"], d:"Theo file InDesign"},
+   {id:"pp_bleedmm", l:"Bleed (mm)", type:"number", d:"3", show:v=>v.pp_bleed==="Tự đặt"},
+   {id:"pp_marks", l:"Dấu xén, dấu chồng màu", type:"multi", o:["Crop marks","Registration marks","Color bars","Page information"], d:["Crop marks"]},
+   {id:"pp_ppi", l:"Cảnh báo ảnh dưới (ppi)", type:"number", d:"250", h:"Để trống nếu không cần kiểm"},
+   {id:"pp_rgb", l:"Ảnh RGB trong file in", type:"seg", o:["Không kiểm","Cảnh báo","Bỏ qua file"], d:"Cảnh báo"},
+  ]},
+  {group:"Ảnh JPG / PNG", show:v=>has(v.formats,"JPG")||has(v.formats,"PNG"), f:[
+   {id:"img_unit", l:"Mỗi ảnh là", type:"seg", o:["Một trang","Một trải đôi"], d:"Một trang"},
+   {id:"img_res", l:"Độ phân giải (ppi)", type:"seg", o:["72","150","300"], d:"150"},
+   {id:"img_q", l:"Chất lượng JPG", type:"seg", o:["Trung bình","Cao","Tối đa"], d:"Cao", show:v=>has(v.formats,"JPG")},
+   {id:"img_color", l:"Hệ màu", type:"seg", o:["RGB","CMYK","Gray"], d:"RGB"},
+   {id:"img_folder", l:"Gom ảnh vào thư mục riêng", type:"seg", o:["Có","Không"], d:"Có", h:"Có: tạo thư mục con cùng tên file để chứa các ảnh"},
+  ]},
+ ]},
+ {k:"D", t:"Đặt tên và nơi lưu", f:[
+  {id:"prefix", l:"Tiền tố tên file", type:"text", mono:1, d:"ONLINE_"},
+  {id:"suffix", l:"Hậu tố tên file", type:"text", mono:1, d:"", h:"VD: _v2, _low. Để trống nếu không cần"},
+  {id:"date", l:"Thêm ngày vào tên", type:"seg", o:["Không","Có (YYYYMMDD)"], d:"Không"},
+  {id:"preview", type:"preview"},
+  {id:"dest", l:"Lưu file xuất ở đâu", type:"seg", o:["Cạnh file .indd","Thư mục con trong cùng thư mục","Một thư mục cố định"], d:"Cạnh file .indd"},
+  {id:"destsub", l:"Tên thư mục con", type:"text", d:"Export", show:v=>v.dest==="Thư mục con trong cùng thư mục"},
+  {id:"destfix", l:"Đường dẫn thư mục cố định", type:"text", mono:1, d:"", show:v=>v.dest==="Một thư mục cố định"},
+  {id:"dup", l:"Khi đã có file trùng tên", type:"seg", o:["Ghi đè","Giữ bản cũ, thêm giờ vào tên mới"], d:"Ghi đè"},
+ ]},
+ {k:"E", t:"Kiểm tra và xử lý lỗi", f:[
+  {id:"e_link", l:"Thiếu link ảnh / file", type:"seg", o:["Vẫn xuất, ghi cảnh báo","Bỏ qua file"], d:"Vẫn xuất, ghi cảnh báo"},
+  {id:"e_font", l:"Thiếu font", type:"seg", o:["Bỏ qua file","Vẫn xuất, ghi cảnh báo"], d:"Bỏ qua file"},
+  {id:"e_overset", l:"Chữ bị tràn khung (overset)", type:"seg", o:["Không kiểm","Cảnh báo","Bỏ qua file"], d:"Không kiểm"},
+  {id:"e_preflight", l:"Chạy Preflight profile", type:"text", d:"", h:"Ghi tên profile nếu muốn dùng. Để trống nếu không"},
+  {id:"e_open", l:"File đang mở trong InDesign", type:"seg", o:["Để lần sau","Vẫn xuất"], d:"Để lần sau"},
+ ]},
+ {k:"F", t:"Cách kích hoạt", f:[
+  {id:"trigger", l:"Chạy khi nào", type:"multi", o:["Tự động theo lịch","Bấm đúp để chạy ngay","Kéo thả file vào"], d:["Tự động theo lịch","Bấm đúp để chạy ngay"]},
+  {id:"interval", l:"Quét mỗi (phút)", type:"number", d:"30", show:v=>has(v.trigger,"Tự động theo lịch")},
+  {id:"minage", l:"Chờ sau lần lưu cuối (phút)", type:"number", d:"5", h:"Tránh export khi đang sửa dở", show:v=>has(v.trigger,"Tự động theo lịch")},
+  {id:"retry", l:"Thử lại file bị bỏ qua sau (giờ)", type:"number", d:"24", show:v=>has(v.trigger,"Tự động theo lịch")},
+  {id:"reexport", l:"Khi file .indd được sửa", type:"seg", o:["Tự export lại","Không export lại"], d:"Tự export lại"},
+ ]},
+ {k:"G", t:"Sau khi export", f:[
+  {id:"close", l:"Đóng InDesign khi xong (chỉ khi script tự mở)", type:"seg", o:["Không","Có"], d:"Không"},
+  {id:"copyto", l:"Copy thêm bản xuất tới", type:"seg", o:["Không","Thư mục khác / Google Drive"], d:"Không"},
+  {id:"copypath", l:"Đường dẫn đích", type:"text", mono:1, d:"", show:v=>v.copyto!=="Không"},
+  {id:"copyrule", l:"Quy tắc chọn thư mục đích", type:"text", d:"", h:"VD: trùng tên thư mục chứa file .indd; hoặc theo mã ở đầu tên file", show:v=>v.copyto!=="Không"},
+ ]},
+ {k:"H", t:"Ghi chú thêm", f:[
+  {id:"notes", l:"Yêu cầu khác", type:"area", d:"", h:"Mọi điều chưa có ở trên"},
+ ]},
+];
+
+// ---------- Trạng thái ----------
+const KEY="phieu-export-v1";
+const defaults={}; const walk=(fs,cb)=>fs.forEach(x=>x.group?walk(x.f,cb):cb(x));
+S.forEach(s=>walk(s.f,x=>{ if(x.id&&x.type!=="preview") defaults[x.id]=Array.isArray(x.d)?[...x.d]:x.d; }));
+let V=structuredClone(defaults);
+try{ const s=JSON.parse(localStorage.getItem(KEY)||"null"); if(s) V=Object.assign(structuredClone(defaults),s); }catch(e){}
+const save=()=>{ try{localStorage.setItem(KEY,JSON.stringify(V));}catch(e){} };
+
+// ---------- Vẽ form ----------
+const form=document.getElementById("f");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function fieldHTML(x){
+  if(x.type==="preview") return `<div class="field" data-id="preview"><span class="lab">Tên file sẽ ra</span><div class="name-preview" id="namepv"></div></div>`;
+  const hint=x.h?`<span class="hint">${esc(x.h)}</span>`:"";
+  if(x.type==="seg"||x.type==="multi"){
+    const t=x.type==="seg"?"radio":"checkbox";
+    const opts=x.o.map((o,i)=>`<label><input type="${t}" name="${x.id}" id="${x.id}-${i}" value="${esc(o)}">${esc(o)}</label>`).join("");
+    return `<div class="field" data-id="${x.id}"><span class="lab" id="${x.id}-l">${esc(x.l)}</span><div class="seg" role="group" aria-labelledby="${x.id}-l">${opts}</div>${hint}</div>`;
+  }
+  const inp = (x.type==="area"||x.area)
+    ? `<textarea id="${x.id}" class="${x.mono?"mono":""}"></textarea>`
+    : `<input type="${x.type==="number"?"number":"text"}" id="${x.id}" class="${x.mono?"mono":""}" ${x.type==="number"?'min="0"':""}>`;
+  return `<div class="field" data-id="${x.id}"><label for="${x.id}">${esc(x.l)}</label>${inp}${hint}</div>`;
+}
+form.innerHTML=S.map(s=>`<fieldset><legend><div class="sec-h"><span class="sec-k">MỤC ${s.k}</span><span class="sec-t">${esc(s.t)}</span></div></legend><div class="sec-b">${
+  s.f.map(x=>x.group?`<div class="sub" data-group="${esc(x.group)}"><div class="sub-t">${esc(x.group)}</div>${x.f.map(fieldHTML).join("")}</div>`:fieldHTML(x)).join("")
+}</div></fieldset>`).join("");
+
+function fill(){
+  S.forEach(s=>walk(s.f,x=>{
+    if(!x.id||x.type==="preview") return;
+    if(x.type==="seg") form.querySelectorAll(`input[name="${x.id}"]`).forEach(i=>i.checked=i.value===V[x.id]);
+    else if(x.type==="multi") form.querySelectorAll(`input[name="${x.id}"]`).forEach(i=>i.checked=has(V[x.id],i.value));
+    else document.getElementById(x.id).value=V[x.id]??"";
+  }));
+}
+function read(e){
+  const t=e.target; const id=t.name||t.id; if(!(id in defaults)) return;
+  if(t.type==="checkbox") V[id]=[...form.querySelectorAll(`input[name="${id}"]:checked`)].map(i=>i.value);
+  else V[id]=t.value;
+  save(); update();
+}
+form.addEventListener("input",read); form.addEventListener("change",read);
+form.addEventListener("submit",e=>e.preventDefault());
+
+// ---------- Hiện/ẩn và xuất phiếu ----------
+const visible=(x,parentShow)=> (parentShow===undefined||parentShow) && (!x.show||x.show(V));
+function sampleName(){
+  const d=V.date!=="Không"?"_20261001":"";
+  const ext=has(V.formats,"Interactive PDF")||has(V.formats,"Print PDF")?".pdf":(has(V.formats,"JPG")?".jpg":".png");
+  return `${V.prefix||""}Chuong03${V.suffix||""}${d}${ext}`;
+}
+function update(){
+  S.forEach(s=>s.f.forEach(x=>{
+    if(x.group){ const g=form.querySelector(`[data-group="${x.group}"]`); const on=x.show(V); g.hidden=!on;
+      x.f.forEach(y=>{ const el=form.querySelector(`[data-id="${y.id}"]`); if(el) el.hidden=!visible(y,on); }); }
+    else { const el=form.querySelector(`[data-id="${x.id}"]`); if(el) el.hidden=!visible(x); }
+  }));
+  document.getElementById("namepv").textContent="Chuong03.indd  →  "+sampleName();
+  render();
+}
+function val(x){
+  const v=V[x.id];
+  if(Array.isArray(v)) return v.length?v.join(", "):"(không chọn)";
+  if(v===""||v==null) return "(để trống)";
+  return x.area||x.type==="area" ? "\n    "+String(v).split("\n").join("\n    ") : v;
+}
+function render(){
+  const lines=["PHIẾU YÊU CẦU TẠO SCRIPT EXPORT INDESIGN",""];
+  let missing=0;
+  S.forEach(s=>{
+    const rows=[];
+    s.f.forEach(x=>{
+      if(x.group){ if(!x.show(V)) return; rows.push(`  [${x.group}]`);
+        x.f.forEach(y=>{ if(visible(y,true)) rows.push(`    - ${y.l}: ${val(y)}`); }); return; }
+      if(x.type==="preview"||!visible(x)) return;
+      rows.push(`  - ${x.l}: ${val(x)}`);
+    });
+    lines.push(`${s.k}. ${s.t.toUpperCase()}`, ...rows, "");
+  });
+  if(!String(V.root||"").trim()) missing++;
+  if(!(V.formats||[]).length) missing++;
+  lines.push(`Ví dụ tên file: Chuong03.indd → ${sampleName()}`);
+  document.getElementById("out").textContent=lines.join("\n");
+  document.getElementById("count").textContent= missing?`Còn ${missing} mục bắt buộc trống`:"Đủ mục bắt buộc";
+}
+
+// ---------- Nút ----------
+const toast=m=>{const t=document.getElementById("toast"); t.textContent=m; clearTimeout(t._h); t._h=setTimeout(()=>t.textContent="",3000);};
+document.getElementById("btn-copy").addEventListener("click",()=>{
+  const txt=document.getElementById("out").textContent;
+  const fallback=()=>{const r=document.createRange(); r.selectNodeContents(document.getElementById("out")); const s=getSelection(); s.removeAllRanges(); s.addRange(r); toast("Đã bôi đen phiếu, bấm Ctrl+C để sao chép.");};
+  try{ navigator.clipboard.writeText(txt).then(()=>toast("Đã sao chép."),fallback); }catch(e){ fallback(); }
+});
+
+document.getElementById("btn-dl").addEventListener("click",()=>{
+  const txt=document.getElementById("out").textContent.replace(/\n/g,"\r\n");
+  const slug=String(V.job||"export").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d").replace(/Đ/g,"D").replace(/[^A-Za-z0-9]+/g,"_").replace(/^_|_$/g,"")||"export";
+  const d=new Date(), p=n=>String(n).padStart(2,"0");
+  const name=`Phieu_${slug}_${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}.txt`;
+  const url=URL.createObjectURL(new Blob(["\ufeff"+txt],{type:"text/plain;charset=utf-8"}));
+  const a=document.createElement("a"); a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  toast("Đã tải "+name);
+});
+let armed=false;
+document.getElementById("btn-reset").addEventListener("click",e=>{
+  if(!armed){ armed=true; e.target.textContent="Bấm lần nữa để xác nhận"; setTimeout(()=>{armed=false; e.target.textContent="Điền lại mặc định";},3000); return; }
+  armed=false; e.target.textContent="Điền lại mặc định";
+  V=structuredClone(defaults); save(); fill(); update(); toast("Đã điền lại mặc định.");
+});
+
+fill(); update();
+</script>
+</body>
+</html>

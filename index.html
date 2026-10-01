@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>Phiếu lệnh Export InDesign</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800&family=Be+Vietnam+Pro:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: phiếu lệnh sản xuất — form điền bên trái, phiếu xuất ra dính bên phải; một cột trên điện thoại */
+:root{
+  --paper:#f5f7f8; --sheet:#ffffff; --ink:#15212a; --muted:#5b6b76; --rule:#d5dde2;
+  --accent:#0b7aa3; --accent-ink:#ffffff; --accent-soft:#e3f2f8; --mark:#c2185b;
+  --display:"Archivo","Be Vietnam Pro",system-ui,sans-serif;
+  --body:"Be Vietnam Pro",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#0f1519; --sheet:#162026; --ink:#e4ebef; --muted:#93a4ae; --rule:#2a3740;
+  --accent:#4fc0e6; --accent-ink:#06222d; --accent-soft:#16323e; --mark:#f06292; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0f1519; --sheet:#162026; --ink:#e4ebef; --muted:#93a4ae; --rule:#2a3740;
+  --accent:#4fc0e6; --accent-ink:#06222d; --accent-soft:#16323e; --mark:#f06292; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.55 var(--body);padding-inline:16px;padding-block:28px 48px}
+.wrap{max-width:1180px;margin:0 auto;display:grid;gap:28px}
+header{display:flex;gap:16px;align-items:flex-start;justify-content:space-between;flex-wrap:wrap}
+.reg{width:34px;height:34px;flex:none;border:2px solid var(--mark);border-radius:50%;position:relative;margin-top:4px}
+.reg::before,.reg::after{content:"";position:absolute;background:var(--mark)}
+.reg::before{left:50%;top:-8px;bottom:-8px;width:2px;transform:translateX(-50%)}
+.reg::after{top:50%;left:-8px;right:-8px;height:2px;transform:translateY(-50%)}
+.head{display:flex;gap:16px;min-width:0}
+h1{font:800 clamp(24px,4vw,34px)/1.1 var(--display);letter-spacing:-.01em;margin:0 0 6px;text-wrap:balance}
+.lede{margin:0;color:var(--muted);max-width:62ch}
+.actions{display:flex;gap:8px;flex-wrap:wrap}
+button{font:600 14px var(--body);border-radius:6px;padding:9px 14px;cursor:pointer;border:1px solid var(--rule);background:var(--sheet);color:var(--ink)}
+button.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,.seg label:focus-within{outline:2px solid var(--accent);outline-offset:2px}
+
+.grid{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:28px;align-items:start}
+@media (max-width:900px){.grid{grid-template-columns:1fr}}
+
+form{display:grid;gap:18px;min-width:0}
+fieldset{margin:0;border:1px solid var(--rule);background:var(--sheet);border-radius:8px;padding:0;min-width:0}
+legend{display:contents}
+.sec-h{display:flex;gap:12px;align-items:baseline;padding:14px 18px;border-bottom:1px solid var(--rule)}
+.sec-k{font:600 12px var(--mono);color:var(--mark);letter-spacing:.06em}
+.sec-t{font:700 17px var(--display)}
+.sec-b{padding:16px 18px;display:grid;gap:16px}
+.field{display:grid;gap:6px;min-width:0}
+.field>label,.lab{font-weight:600;font-size:14px}
+.hint{font-size:12.5px;color:var(--muted)}
+.row2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+input[type=text],input[type=number],select,textarea{width:100%;font:14px var(--body);color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:6px;padding:9px 11px}
+input.mono{font-family:var(--mono);font-size:13px}
+textarea{min-height:70px;resize:vertical}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg label{display:flex;gap:7px;align-items:center;border:1px solid var(--rule);border-radius:6px;padding:7px 11px;font-size:14px;cursor:pointer;background:var(--paper)}
+.seg input{accent-color:var(--accent);margin:0}
+.seg label:has(input:checked){border-color:var(--accent);background:var(--accent-soft)}
+.sub{border-left:3px solid var(--accent);padding-left:14px;display:grid;gap:16px}
+.sub-t{font:700 13px var(--display);letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+
+aside{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);display:grid;gap:12px;min-width:0}
+@media (max-width:900px){aside{position:static}}
+.ticket{background:var(--sheet);border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.ticket-h{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:12px 16px;border-bottom:1px dashed var(--rule)}
+.ticket-h b{font:700 15px var(--display)}
+.ticket-h span{font:12px var(--mono);color:var(--muted)}
+pre{margin:0;padding:16px;font:12.5px/1.6 var(--mono);white-space:pre-wrap;word-break:break-word;max-height:62vh;overflow:auto;font-variant-numeric:tabular-nums}
+.name-preview{font:13px var(--mono);background:var(--accent-soft);border-radius:6px;padding:8px 11px;word-break:break-all}
+button.big{width:100%;padding:13px 16px;font-size:15px}
+.btns{display:flex;gap:8px;flex-wrap:wrap}.btns button{flex:1 1 160px}
+.toast{font-size:13px;color:var(--accent);min-height:1.3em}
+.note{font-size:13px;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){button{transition:filter .15s}button:hover{filter:brightness(1.06)}}
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="head">
+      <div class="reg" aria-hidden="true"></div>
+      <div>
+        <h1>Phiếu lệnh Export InDesign</h1>
+        <p class="lede">Điền thông số rồi bấm <b>Tải bộ script</b>: nhận về file .zip gồm script, cấu hình và hướng dẫn cài, chạy được ngay trên máy Windows có InDesign. Các ô đang điền sẵn theo bộ export ONLINE anh đang dùng.</p>
+      </div>
+    </div>
+    <div class="actions">
+      <button type="button" id="btn-reset">Điền lại mặc định</button>
+    </div>
+  </header>
+
+  <div class="grid">
+    <form id="f" autocomplete="off"></form>
+    <aside>
+      <div class="ticket">
+        <div class="ticket-h"><b>Phiếu yêu cầu</b><span id="count"></span></div>
+        <pre id="out"></pre>
+      </div>
+      <button type="button" class="primary big" id="btn-zip">Tải bộ script (.zip)</button><div class="btns"><button type="button" id="btn-dl">Tải phiếu (.txt)</button><button type="button" id="btn-copy">Sao chép phiếu</button></div>
+      <div class="toast" id="toast" role="status"></div>
+      <p class="note">Phiếu chỉ để lưu hồ sơ hoặc gửi Claude khi cần thêm tính năng. Bản nháp được lưu trên trình duyệt này, mở lại vẫn còn.</p>
+    </aside>
+  </div>
+</div>
+
+<script>
+// ---------- Định nghĩa các mục của phiếu ----------
+const has = (v, x) => Array.isArray(v) && v.includes(x);
+const S = [
+ {k:"A", t:"Thông tin chung", f:[
+  {id:"job", l:"Tên bộ script", type:"text", d:"Export ONLINE", h:"Để phân biệt khi có nhiều bộ, VD: Export ONLINE, Export in offset"},
+  {id:"idver", l:"Phiên bản InDesign", type:"seg", o:["2024","2025","2026"], d:"2025"},
+  {id:"installdir", l:"Thư mục đặt script trên máy", type:"text", mono:1, d:"E:\\export_online"},
+ ]},
+ {k:"B", t:"Nguồn file", f:[
+  {id:"root", l:"Thư mục gốc chứa file .indd", type:"text", mono:1, d:"", req:1, h:"Có thể ghi nhiều thư mục, mỗi dòng một đường dẫn", area:1},
+  {id:"recurse", l:"Quét cả thư mục con", type:"seg", o:["Có","Không"], d:"Có"},
+  {id:"pattern", l:"Mẫu tên file", type:"text", mono:1, d:"*.indd", h:"Dấu * thay cho chữ bất kỳ. VD: *FINAL*.indd, Chuong*.indd"},
+  {id:"exclude", l:"Bỏ qua thư mục có tên", type:"text", d:"", h:"Ngăn cách bằng dấu phẩy. VD: _old, Backup. Để trống nếu không cần"},
+ ]},
+ {k:"C", t:"Định dạng xuất", f:[
+  {id:"formats", l:"Xuất ra định dạng nào", type:"multi", o:["Interactive PDF","Print PDF","JPG","PNG"], d:["Interactive PDF"], h:"Chọn nhiều nếu mỗi file cần ra nhiều bản"},
+  {group:"Interactive PDF", show:v=>has(v.formats,"Interactive PDF"), f:[
+   {id:"ia_layout", l:"Dàn trang", type:"seg", o:["Từng trang (Pages)","Trải đôi (Spreads)"], d:"Từng trang (Pages)"},
+   {id:"ia_range", l:"Phạm vi trang", type:"text", d:"Tất cả", h:"VD: Tất cả, hoặc 1-10, 15"},
+   {id:"ia_res", l:"Độ phân giải ảnh (ppi)", type:"seg", o:["72","96","144","300"], d:"144"},
+   {id:"ia_q", l:"Chất lượng JPEG", type:"seg", o:["Thấp","Trung bình","Cao","Tối đa"], d:"Cao"},
+   {id:"ia_view", l:"Mở PDF ở chế độ toàn màn hình", type:"seg", o:["Không","Có"], d:"Không"},
+  ]},
+  {group:"Print PDF", show:v=>has(v.formats,"Print PDF"), f:[
+   {id:"pp_preset", l:"Tên PDF preset hoặc chuẩn", type:"text", d:"PDF/X-1a:2001", h:"Ghi đúng tên preset trong File › Adobe PDF Presets, hoặc chuẩn nhà in yêu cầu"},
+   {id:"pp_layout", l:"Dàn trang", type:"seg", o:["Từng trang (Pages)","Trải đôi (Spreads)"], d:"Từng trang (Pages)"},
+   {id:"pp_range", l:"Phạm vi trang", type:"text", d:"Tất cả", h:"VD: Tất cả, hoặc 1-10, 15"},
+   {id:"pp_bleed", l:"Bleed", type:"seg", o:["Theo file InDesign","Tự đặt"], d:"Theo file InDesign"},
+   {id:"pp_bleedmm", l:"Bleed (mm)", type:"number", d:"3", show:v=>v.pp_bleed==="Tự đặt"},
+   {id:"pp_marks", l:"Dấu xén, dấu chồng màu", type:"multi", o:["Crop marks","Registration marks","Color bars","Page information"], d:["Crop marks"]},
+   {id:"pp_ppi", l:"Cảnh báo ảnh dưới (ppi)", type:"number", d:"250", h:"Để trống nếu không cần kiểm"},
+   {id:"pp_rgb", l:"Ảnh RGB trong file in", type:"seg", o:["Không kiểm","Cảnh báo","Bỏ qua file"], d:"Cảnh báo"},
+  ]},
+  {group:"Ảnh JPG / PNG", show:v=>has(v.formats,"JPG")||has(v.formats,"PNG"), f:[
+   {id:"img_unit", l:"Mỗi ảnh là", type:"seg", o:["Một trang","Một trải đôi"], d:"Một trang"},
+   {id:"img_res", l:"Độ phân giải (ppi)", type:"seg", o:["72","150","300"], d:"150"},
+   {id:"img_q", l:"Chất lượng JPG", type:"seg", o:["Trung bình","Cao","Tối đa"], d:"Cao", show:v=>has(v.formats,"JPG")},
+   {id:"img_color", l:"Hệ màu", type:"seg", o:["RGB","CMYK","Gray"], d:"RGB"},
+   {id:"img_folder", l:"Gom ảnh vào thư mục riêng", type:"seg", o:["Có","Không"], d:"Có", h:"Có: tạo thư mục con cùng tên file để chứa các ảnh"},
+  ]},
+ ]},
+ {k:"D", t:"Đặt tên và nơi lưu", f:[
+  {id:"prefix", l:"Tiền tố tên file", type:"text", mono:1, d:"ONLINE_"},
+  {id:"suffix", l:"Hậu tố tên file", type:"text", mono:1, d:"", h:"VD: _v2, _low. Để trống nếu không cần"},
+  {id:"date", l:"Thêm ngày vào tên", type:"seg", o:["Không","Có (YYYYMMDD)"], d:"Không"},
+  {id:"preview", type:"preview"},
+  {id:"dest", l:"Lưu file xuất ở đâu", type:"seg", o:["Cạnh file .indd","Thư mục con trong cùng thư mục","Một thư mục cố định"], d:"Cạnh file .indd"},
+  {id:"destsub", l:"Tên thư mục con", type:"text", d:"Export", show:v=>v.dest==="Thư mục con trong cùng thư mục"},
+  {id:"destfix", l:"Đường dẫn thư mục cố định", type:"text", mono:1, d:"", show:v=>v.dest==="Một thư mục cố định"},
+  {id:"dup", l:"Khi đã có file trùng tên", type:"seg", o:["Ghi đè","Giữ bản cũ, thêm giờ vào tên mới"], d:"Ghi đè"},
+ ]},
+ {k:"E", t:"Kiểm tra và xử lý lỗi", f:[
+  {id:"e_link", l:"Thiếu link ảnh / file", type:"seg", o:["Vẫn xuất, ghi cảnh báo","Bỏ qua file"], d:"Vẫn xuất, ghi cảnh báo"},
+  {id:"e_font", l:"Thiếu font", type:"seg", o:["Bỏ qua file","Vẫn xuất, ghi cảnh báo"], d:"Bỏ qua file"},
+  {id:"e_overset", l:"Chữ bị tràn khung (overset)", type:"seg", o:["Không kiểm","Cảnh báo","Bỏ qua file"], d:"Không kiểm"},
+  {id:"e_preflight", l:"Chạy Preflight profile", type:"text", d:"", h:"Ghi tên profile nếu muốn dùng. Để trống nếu không"},
+  {id:"e_open", l:"File đang mở trong InDesign", type:"seg", o:["Để lần sau","Vẫn xuất"], d:"Để lần sau"},
+ ]},
+ {k:"F", t:"Cách kích hoạt", f:[
+  {id:"trigger", l:"Chạy khi nào", type:"multi", o:["Tự động theo lịch","Bấm đúp để chạy ngay","Kéo thả file vào"], d:["Tự động theo lịch","Bấm đúp để chạy ngay"]},
+  {id:"interval", l:"Quét mỗi (phút)", type:"number", d:"30", show:v=>has(v.trigger,"Tự động theo lịch")},
+  {id:"minage", l:"Chờ sau lần lưu cuối (phút)", type:"number", d:"5", h:"Tránh export khi đang sửa dở", show:v=>has(v.trigger,"Tự động theo lịch")},
+  {id:"retry", l:"Thử lại file bị bỏ qua sau (giờ)", type:"number", d:"24", show:v=>has(v.trigger,"Tự động theo lịch")},
+  {id:"reexport", l:"Khi file .indd được sửa", type:"seg", o:["Tự export lại","Không export lại"], d:"Tự export lại"},
+ ]},
+ {k:"G", t:"Sau khi export", f:[
+  {id:"close", l:"Đóng InDesign khi xong (chỉ khi script tự mở)", type:"seg", o:["Không","Có"], d:"Không"},
+  {id:"copyto", l:"Copy thêm bản xuất tới", type:"seg", o:["Không","Thư mục khác / Google Drive"], d:"Không"},
+  {id:"copypath", l:"Đường dẫn đích", type:"text", mono:1, d:"", show:v=>v.copyto!=="Không"},
+  {id:"copyrule", l:"Đưa vào thư mục nào ở đích", type:"seg", o:["Trùng tên thư mục chứa file .indd","Thẳng vào thư mục đích"], d:"Trùng tên thư mục chứa file .indd", show:v=>v.copyto!=="Không"},
+ ]},
+ {k:"H", t:"Ghi chú thêm", f:[
+  {id:"notes", l:"Yêu cầu khác", type:"area", d:"", h:"Những gì bộ script chưa làm được. Sẽ ghi vào HUONG_DAN.txt để gửi Claude làm thêm"},
+ ]},
+];
+
+// ---------- Trạng thái ----------
+const KEY="phieu-export-v1";
+const defaults={}; const walk=(fs,cb)=>fs.forEach(x=>x.group?walk(x.f,cb):cb(x));
+S.forEach(s=>walk(s.f,x=>{ if(x.id&&x.type!=="preview") defaults[x.id]=Array.isArray(x.d)?[...x.d]:x.d; }));
+let V=JSON.parse(JSON.stringify(defaults));
+try{ const s=JSON.parse(localStorage.getItem(KEY)||"null"); if(s) V=Object.assign(JSON.parse(JSON.stringify(defaults)),s); }catch(e){}
+const save=()=>{ try{localStorage.setItem(KEY,JSON.stringify(V));}catch(e){} };
+
+// ---------- Vẽ form ----------
+const form=document.getElementById("f");
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+function fieldHTML(x){
+  if(x.type==="preview") return `<div class="field" data-id="preview"><span class="lab">Tên file sẽ ra</span><div class="name-preview" id="namepv"></div></div>`;
+  const hint=x.h?`<span class="hint">${esc(x.h)}</span>`:"";
+  if(x.type==="seg"||x.type==="multi"){
+    const t=x.type==="seg"?"radio":"checkbox";
+    const opts=x.o.map((o,i)=>`<label><input type="${t}" name="${x.id}" id="${x.id}-${i}" value="${esc(o)}">${esc(o)}</label>`).join("");
+    return `<div class="field" data-id="${x.id}"><span class="lab" id="${x.id}-l">${esc(x.l)}</span><div class="seg" role="group" aria-labelledby="${x.id}-l">${opts}</div>${hint}</div>`;
+  }
+  const inp = (x.type==="area"||x.area)
+    ? `<textarea id="${x.id}" class="${x.mono?"mono":""}"></textarea>`
+    : `<input type="${x.type==="number"?"number":"text"}" id="${x.id}" class="${x.mono?"mono":""}" ${x.type==="number"?'min="0"':""}>`;
+  return `<div class="field" data-id="${x.id}"><label for="${x.id}">${esc(x.l)}</label>${inp}${hint}</div>`;
+}
+form.innerHTML=S.map(s=>`<fieldset><legend><div class="sec-h"><span class="sec-k">MỤC ${s.k}</span><span class="sec-t">${esc(s.t)}</span></div></legend><div class="sec-b">${
+  s.f.map(x=>x.group?`<div class="sub" data-group="${esc(x.group)}"><div class="sub-t">${esc(x.group)}</div>${x.f.map(fieldHTML).join("")}</div>`:fieldHTML(x)).join("")
+}</div></fieldset>`).join("");
+
+function fill(){
+  S.forEach(s=>walk(s.f,x=>{
+    if(!x.id||x.type==="preview") return;
+    if(x.type==="seg") form.querySelectorAll(`input[name="${x.id}"]`).forEach(i=>i.checked=i.value===V[x.id]);
+    else if(x.type==="multi") form.querySelectorAll(`input[name="${x.id}"]`).forEach(i=>i.checked=has(V[x.id],i.value));
+    else document.getElementById(x.id).value=V[x.id]??"";
+  }));
+}
+function read(e){
+  const t=e.target; const id=t.name||t.id; if(!(id in defaults)) return;
+  if(t.type==="checkbox") V[id]=[...form.querySelectorAll(`input[name="${id}"]:checked`)].map(i=>i.value);
+  else V[id]=t.value;
+  save(); update();
+}
+form.addEventListener("input",read); form.addEventListener("change",read);
+form.addEventListener("submit",e=>e.preventDefault());
+
+// ---------- Hiện/ẩn và xuất phiếu ----------
+const visible=(x,parentShow)=> (parentShow===undefined||parentShow) && (!x.show||x.show(V));
+function sampleName(){
+  const d=V.date!=="Không"?"_20261001":"";
+  const ext=has(V.formats,"Interactive PDF")||has(V.formats,"Print PDF")?".pdf":(has(V.formats,"JPG")?".jpg":".png");
+  return `${V.prefix||""}Chuong03${V.suffix||""}${d}${ext}`;
+}
+function update(){
+  S.forEach(s=>s.f.forEach(x=>{
+    if(x.group){ const g=form.querySelector(`[data-group="${x.group}"]`); const on=x.show(V); g.hidden=!on;
+      x.f.forEach(y=>{ const el=form.querySelector(`[data-id="${y.id}"]`); if(el) el.hidden=!visible(y,on); }); }
+    else { const el=form.querySelector(`[data-id="${x.id}"]`); if(el) el.hidden=!visible(x); }
+  }));
+  document.getElementById("namepv").textContent="Chuong03.indd  →  "+sampleName();
+  render();
+}
+function val(x){
+  const v=V[x.id];
+  if(Array.isArray(v)) return v.length?v.join(", "):"(không chọn)";
+  if(v===""||v==null) return "(để trống)";
+  return x.area||x.type==="area" ? "\n    "+String(v).split("\n").join("\n    ") : v;
+}
+function render(){
+  const lines=["PHIẾU YÊU CẦU TẠO SCRIPT EXPORT INDESIGN",""];
+  let missing=0;
+  S.forEach(s=>{
+    const rows=[];
+    s.f.forEach(x=>{
+      if(x.group){ if(!x.show(V)) return; rows.push(`  [${x.group}]`);
+        x.f.forEach(y=>{ if(visible(y,true)) rows.push(`    - ${y.l}: ${val(y)}`); }); return; }
+      if(x.type==="preview"||!visible(x)) return;
+      rows.push(`  - ${x.l}: ${val(x)}`);
+    });
+    lines.push(`${s.k}. ${s.t.toUpperCase()}`, ...rows, "");
+  });
+  missing=problems(buildConfig()).length;
+  lines.push(`Ví dụ tên file: Chuong03.indd → ${sampleName()}`);
+  document.getElementById("out").textContent=lines.join("\n");
+  document.getElementById("count").textContent= missing?`Còn ${missing} mục cần điền`:"Sẵn sàng tải bộ script";
+}
+
+const TPL={"jsx": "// ============================================================\n// export_job.jsx  -  Script loi, KHONG can sua.\n// Moi thong so nam trong config.json, do export_job.ps1 truyen vao.\n// scriptArgs: cfg (JSON), inddPath, stem (duong dan khong duoi file), skipIfOpen (\"1\"/\"0\")\n// Tra ve nhieu dong: dong 1 = OK | SKIP | OPEN | ERROR\n//   OUT:<duong dan file da xuat>   WARN:<canh bao>   MSG:<ly do>\n// ============================================================\n\nfunction arg(n) {\n    try { if (app.scriptArgs.isDefined(n)) { return app.scriptArgs.getValue(n); } } catch (e) {}\n    return \"\";\n}\nvar C = eval(\"(\" + arg(\"cfg\") + \")\");\nvar R = [];\nfunction result(status) { return [status].concat(R).join(\"\\n\"); }\nfunction warn(m) { R.push(\"WARN:\" + m); }\n\nfunction pad(n, w) { var s = String(n); while (s.length < w) { s = \"0\" + s; } return s; }\n\n// Ap tung thong so, thong so nao khong ap duoc thi chi canh bao\nfunction setAll(obj, list, label) {\n    for (var i = 0; i < list.length; i++) {\n        try { obj[list[i][0]] = list[i][1](); }\n        catch (e) { warn(label + \": khong ap duoc thong so \" + list[i][0]); }\n    }\n}\n\n// Trung ten: ghi de, hoac them gio vao ten moi\nfunction prep(f) {\n    if (f.exists && C.dup === \"timestamp\") {\n        var d = new Date();\n        var ts = \"_\" + pad(d.getHours(), 2) + pad(d.getMinutes(), 2) + pad(d.getSeconds(), 2);\n        var n = f.name, i = n.lastIndexOf(\".\");\n        f = new File(f.parent.fsName + \"/\" + n.substring(0, i) + ts + n.substring(i));\n    }\n    if (f.exists) { f.remove(); }\n    return f;\n}\nfunction done(f) {\n    if (!f.exists) { throw new Error(\"Export xong nhung khong thay file \" + f.name); }\n    R.push(\"OUT:\" + f.fsName);\n}\n\nfunction findOpenDoc(file) {\n    for (var i = 0; i < app.documents.length; i++) {\n        try { if (app.documents[i].fullName.fsName == file.fsName) { return app.documents[i]; } } catch (e) {}\n    }\n    return null;\n}\n\n// ---------------- Kiem tra truoc khi xuat ----------------\n// Tra ve chuoi ly do neu phai bo qua file, \"\" neu duoc xuat\nfunction checks(doc) {\n    var E = C.errors;\n\n    var missing = [];\n    for (var i = 0; i < doc.links.length; i++) {\n        var lk = doc.links[i];\n        try {\n            if (lk.status == LinkStatus.LINK_MISSING) { missing.push(lk.name); }\n            else if (lk.status == LinkStatus.LINK_OUT_OF_DATE) { lk.update(); }\n        } catch (e) {}\n    }\n    if (missing.length) {\n        if (E.missingLinks === \"skip\") { return \"Thieu link: \" + missing.join(\", \"); }\n        warn(\"Thieu link (dung anh preview): \" + missing.join(\", \"));\n    }\n\n    var fonts = [];\n    for (var j = 0; j < doc.fonts.length; j++) {\n        try { if (doc.fonts[j].status != FontStatus.INSTALLED) { fonts.push(doc.fonts[j].name); } } catch (e) {}\n    }\n    if (fonts.length) {\n        if (E.missingFonts === \"skip\") { return \"Thieu font: \" + fonts.join(\", \"); }\n        warn(\"Thieu font: \" + fonts.join(\", \"));\n    }\n\n    if (E.overset !== \"off\") {\n        var over = 0;\n        for (var s = 0; s < doc.stories.length; s++) { try { if (doc.stories[s].overflows) { over++; } } catch (e) {} }\n        if (over) {\n            if (E.overset === \"skip\") { return over + \" khung chu bi tran (overset)\"; }\n            warn(over + \" khung chu bi tran (overset)\");\n        }\n    }\n\n    if (E.preflightProfile) {\n        var prof = app.preflightProfiles.itemByName(E.preflightProfile);\n        if (!prof.isValid) { warn(\"Khong co Preflight profile: \" + E.preflightProfile); }\n        else {\n            try {\n                var proc = app.preflightProcesses.add(doc, prof);\n                proc.waitForProcess();\n                var res = String(proc.processResults);\n                proc.remove();\n                if (res && res !== \"None\") { warn(\"Preflight bao loi: \" + res.substring(0, 300)); }\n            } catch (e) { warn(\"Khong chay duoc Preflight: \" + e.message); }\n        }\n    }\n\n    var P = C.formats.print;\n    if (P && (P.minPpi > 0 || P.rgb !== \"off\")) {\n        var low = [], rgb = [], gs = doc.allGraphics;\n        for (var g = 0; g < gs.length; g++) {\n            var gr = gs[g], nm = \"\";\n            try { nm = gr.itemLink.name; } catch (e) { nm = \"anh \" + (g + 1); }\n            if (P.minPpi > 0) {\n                try {\n                    var ppi = gr.effectivePpi;\n                    var m = Math.min(ppi[0], ppi[1]);\n                    if (m > 0 && m < P.minPpi) { low.push(nm + \" (\" + Math.round(m) + \"ppi)\"); }\n                } catch (e) {}\n            }\n            if (P.rgb !== \"off\") { try { if (gr.space == \"RGB\") { rgb.push(nm); } } catch (e) {} }\n        }\n        if (low.length) { warn(\"Anh duoi \" + P.minPpi + \"ppi: \" + low.join(\", \")); }\n        if (rgb.length) {\n            if (P.rgb === \"skip\") { return \"Anh RGB trong file in: \" + rgb.join(\", \"); }\n            warn(\"Anh RGB: \" + rgb.join(\", \"));\n        }\n    }\n    return \"\";\n}\n\n// ---------------- Cac dinh dang xuat ----------------\nfunction doInteractive(doc, stem) {\n    var o = C.formats.interactive;\n    setAll(app.interactivePDFExportPreferences, [\n        [\"pageRange\", function () { return o.range ? o.range : PageRange.ALL_PAGES; }],\n        [\"exportReaderSpreads\", function () { return o.spreads; }],\n        [\"rasterResolution\", function () { return o.res; }],\n        [\"pdfRasterCompression\", function () { return PDFRasterCompressionOptions.JPEG_COMPRESSION; }],\n        [\"pdfJPEGQuality\", function () { return PDFJPEGQualityOptions[o.quality]; }],\n        [\"openInFullScreen\", function () { return o.fullscreen; }],\n        [\"viewPDF\", function () { return false; }]\n    ], \"Interactive PDF\");\n    var f = prep(new File(stem + \".pdf\"));\n    doc.exportFile(ExportFormat.INTERACTIVE_PDF, f, false);\n    done(f);\n}\n\nfunction doPrint(doc, stem) {\n    var o = C.formats.print;\n    var base = app.pdfExportPresets.itemByName(o.preset);\n    if (!base.isValid) { throw new Error(\"Khong co PDF preset ten: \" + o.preset); }\n    // Sao chep preset sang preset tam de chinh bleed/dau xen ma khong dong vao preset goc\n    var tmp = app.pdfExportPresets.add({ name: \"__tmp_export_\" + (new Date()).getTime() });\n    try {\n        var props = base.properties;\n        for (var k in props) {\n            if (k == \"name\" || k == \"parent\" || k == \"id\" || k == \"index\" || k == \"isValid\") { continue; }\n            try { tmp[k] = props[k]; } catch (e) {}\n        }\n        setAll(tmp, [\n            [\"pageRange\", function () { return o.range ? o.range : PageRange.ALL_PAGES; }],\n            [\"exportReaderSpreads\", function () { return o.spreads; }],\n            [\"cropMarks\", function () { return o.marks.crop; }],\n            [\"registrationMarks\", function () { return o.marks.reg; }],\n            [\"colorBars\", function () { return o.marks.bars; }],\n            [\"pageInformationMarks\", function () { return o.marks.info; }],\n            [\"useDocumentBleedWithPDF\", function () { return o.bleedMode !== \"custom\"; }]\n        ], \"Print PDF\");\n        if (o.bleedMode === \"custom\") {\n            var b = o.bleedMm + \"mm\";\n            setAll(tmp, [\n                [\"bleedTop\", function () { return b; }], [\"bleedBottom\", function () { return b; }],\n                [\"bleedInside\", function () { return b; }], [\"bleedOutside\", function () { return b; }]\n            ], \"Print PDF\");\n        }\n        var f = prep(new File(stem + (C.formats.interactive ? \"_PRINT\" : \"\") + \".pdf\"));\n        doc.exportFile(ExportFormat.PDF_TYPE, f, false, tmp);\n        done(f);\n    } finally {\n        try { tmp.remove(); } catch (e) {}\n    }\n}\n\nfunction doImages(doc, stem, kind) {\n    var o = C.formats.images;\n    var isJpg = kind === \"jpg\";\n    var P = isJpg ? app.jpegExportPreferences : app.pngExportPreferences;\n    var common = [\n        [\"exportResolution\", function () { return o.res; }],\n        [\"exportingSpread\", function () { return o.spreads; }]\n    ];\n    if (isJpg) {\n        common.push([\"jpegExportRange\", function () { return ExportRangeOrAllPages.EXPORT_RANGE; }]);\n        common.push([\"jpegQuality\", function () { return JPEGOptionsQuality[o.quality]; }]);\n        common.push([\"jpegColorSpace\", function () { return JpegColorSpaceEnum[o.color]; }]);\n    } else {\n        common.push([\"pngExportRange\", function () { return ExportRangeOrAllPages.EXPORT_RANGE; }]);\n        common.push([\"pngQuality\", function () { return PNGQualityEnum[o.quality]; }]);\n        if (o.color === \"CMYK\") { warn(\"PNG khong ho tro CMYK, xuat RGB\"); }\n        common.push([\"pngColorSpace\", function () { return o.color === \"GRAY\" ? PNGColorSpaceEnum.GRAY : PNGColorSpaceEnum.RGB; }]);\n    }\n    setAll(P, common, isJpg ? \"JPG\" : \"PNG\");\n\n    var prefix = stem;\n    if (o.subfolder) {\n        var dir = new Folder(stem + (isJpg && C.formats.png ? \"_JPG\" : (!isJpg && C.formats.jpg ? \"_PNG\" : \"\")));\n        if (!dir.exists) { dir.create(); }\n        prefix = dir.fsName + \"/\" + new File(stem).name;\n    }\n    var units = o.spreads ? doc.spreads : doc.pages;\n    for (var i = 0; i < units.length; i++) {\n        var pg = o.spreads ? doc.spreads[i].pages[0] : doc.pages[i];\n        P.pageString = \"+\" + (pg.documentOffset + 1);\n        var f = prep(new File(prefix + \"_\" + pad(i + 1, 3) + \".\" + kind));\n        doc.exportFile(isJpg ? ExportFormat.JPG : ExportFormat.PNG_FORMAT, f, false);\n        done(f);\n    }\n}\n\n// ---------------- Chuong trinh chinh ----------------\nfunction main() {\n    var inddFile = new File(arg(\"inddPath\"));\n    var stem = arg(\"stem\");\n    if (!inddFile.exists) { R.push(\"MSG:Khong tim thay file \" + arg(\"inddPath\")); return result(\"ERROR\"); }\n\n    var oldLevel = app.scriptPreferences.userInteractionLevel;\n    app.scriptPreferences.userInteractionLevel = UserInteractionLevels.NEVER_INTERACT;\n    var doc = null, opened = false;\n    try {\n        doc = findOpenDoc(inddFile);\n        if (doc && arg(\"skipIfOpen\") === \"1\") { R.push(\"MSG:Dang mo trong InDesign\"); return result(\"OPEN\"); }\n        if (!doc) { doc = app.open(inddFile, false); opened = true; }\n\n        var why = checks(doc);\n        if (why) { R.push(\"MSG:\" + why); return result(\"SKIP\"); }\n\n        var F = C.formats;\n        if (F.interactive) { doInteractive(doc, stem); }\n        if (F.print) { doPrint(doc, stem); }\n        if (F.jpg) { doImages(doc, stem, \"jpg\"); }\n        if (F.png) { doImages(doc, stem, \"png\"); }\n        return result(\"OK\");\n    } catch (e) {\n        R.push(\"MSG:\" + e.message + \" (dong \" + e.line + \")\");\n        return result(\"ERROR\");\n    } finally {\n        if (doc && opened) { try { doc.close(SaveOptions.NO); } catch (e) {} }\n        app.scriptPreferences.userInteractionLevel = oldLevel;\n    }\n}\nmain();\n", "ps1": "# ============================================================\n# export_job.ps1  -  Script loi, KHONG can sua. Moi thong so nam trong config.json.\n#   Khong tham so : quet thu muc goc theo config (dung cho lich tu dong)\n#   -Force        : quet ngay, thu lai ca file bi bo qua / dang mo\n#   -Files a b c  : chi xu ly cac file/thu muc duoc keo tha vao\n# Ma thoat: 0 = xong, 1 = co loi, 2 = khong co viec\n# Nhat ky: log.txt   Trang thai: state.json (dung xoa)\n# ============================================================\nparam([switch]$Force, [Parameter(ValueFromRemainingArguments = $true)][string[]]$Files)\n\n$ErrorActionPreference = 'Stop'\n$here = Split-Path -Parent $MyInvocation.MyCommand.Path\n$logFile = Join-Path $here 'log.txt'\n$stateFile = Join-Path $here 'state.json'\n$cfgText = Get-Content -LiteralPath (Join-Path $here 'config.json') -Raw -Encoding UTF8\n$cfg = $cfgText | ConvertFrom-Json\n$jsx = Get-Content -LiteralPath (Join-Path $here 'export_job.jsx') -Raw -Encoding UTF8\n$cfgArg = $cfg | ConvertTo-Json -Depth 8 -Compress\n\nfunction Log([string]$m) {\n    $line = \"[{0}] {1}\" -f (Get-Date -Format 'yyyy-MM-dd HH:mm:ss'), $m\n    Write-Host $line\n    Add-Content -LiteralPath $logFile -Value $line -Encoding UTF8\n}\nfunction Norm([string]$s) { return $s.Normalize([Text.NormalizationForm]::FormC).Trim().ToLowerInvariant() }\n\n# ---------- Chi cho 1 lan chay tai mot thoi diem ----------\n$mutex = New-Object System.Threading.Mutex($false, ('Local\\IDExport_' + $cfg.jobSlug))\ntry { if (-not $mutex.WaitOne(0)) { exit 2 } } catch [System.Threading.AbandonedMutexException] { }\n\n$exitCode = 2\ntry {\n    # ---------- Trang thai ----------\n    $state = @{}\n    if (Test-Path -LiteralPath $stateFile) {\n        $raw = Get-Content -LiteralPath $stateFile -Raw -Encoding UTF8\n        if ($raw -and $raw.Trim()) { (ConvertFrom-Json $raw).PSObject.Properties | ForEach-Object { $state[$_.Name] = $_.Value } }\n    }\n    function Save-State { $state | ConvertTo-Json -Depth 3 | Set-Content -LiteralPath $stateFile -Encoding UTF8 }\n    function Set-State($key, $mtime, $status, $note) {\n        $state[$key] = [pscustomobject]@{ Mtime = $mtime; Status = $status; At = (Get-Date).ToString('o'); Note = $note }\n        Save-State\n    }\n\n    # ---------- Duong dan dau ra ----------\n    function Get-OutDir($fi) {\n        switch ($cfg.dest.mode) {\n            'subfolder' { $d = Join-Path $fi.DirectoryName $cfg.dest.sub }\n            'fixed'     { $d = $cfg.dest.fixed }\n            default     { $d = $fi.DirectoryName }\n        }\n        if (-not (Test-Path -LiteralPath $d)) { New-Item -ItemType Directory -Path $d -Force | Out-Null }\n        return $d\n    }\n    function Get-Stem($fi, $dir) {\n        $name = $cfg.naming.prefix + $fi.BaseName + $cfg.naming.suffix\n        if ($cfg.naming.addDate) { $name += '_' + (Get-Date -Format 'yyyyMMdd') }\n        return (Join-Path $dir $name)\n    }\n    function Get-PrimaryOut($stem) {\n        if ($cfg.formats.interactive) { return \"$stem.pdf\" }\n        if ($cfg.formats.print) { return \"$stem.pdf\" }\n        return $null\n    }\n\n    function Test-Excluded($fi) {\n        if (-not $cfg.exclude -or @($cfg.exclude).Count -eq 0) { return $false }\n        $ex = @($cfg.exclude | ForEach-Object { Norm $_ })\n        foreach ($seg in ($fi.DirectoryName -split '[\\\\/]')) { if ($ex -contains (Norm $seg)) { return $true } }\n        return $false\n    }\n\n    # ---------- Gom danh sach file ----------\n    $manual = ($Files -and $Files.Count -gt 0)\n    $cands = @()\n    if ($manual) {\n        foreach ($p in $Files) {\n            if (Test-Path -LiteralPath $p -PathType Container) {\n                $cands += Get-ChildItem -LiteralPath $p -Filter '*.indd' -File -Recurse -ErrorAction SilentlyContinue\n            } elseif ($p -like '*.indd') { $cands += Get-Item -LiteralPath $p }\n        }\n    } else {\n        foreach ($root in @($cfg.roots)) {\n            if (-not (Test-Path -LiteralPath $root)) { Log \"Khong tim thay thu muc goc: $root  -> sua roots trong config.json\"; continue }\n            $gci = @{ LiteralPath = $root; Filter = '*.indd'; File = $true; ErrorAction = 'SilentlyContinue' }\n            if ($cfg.recurse) { $gci.Recurse = $true }\n            $cands += Get-ChildItem @gci\n        }\n    }\n    $cands = @($cands | Where-Object { $_.Name -notlike '~*' -and $_.Name -like $cfg.pattern -and -not (Test-Excluded $_) })\n\n    $now = Get-Date\n    $todo = @()\n    foreach ($fi in $cands) {\n        $key = $fi.FullName\n        $mt = $fi.LastWriteTimeUtc.Ticks.ToString()\n        $s = $state[$key]\n        if (-not $manual) {\n            if (($now - $fi.LastWriteTime).TotalMinutes -lt $cfg.schedule.minAgeMinutes) { continue }\n            if (-not $s) {\n                $prim = Get-PrimaryOut (Get-Stem $fi (Get-OutDir $fi))\n                if ($prim -and (Test-Path -LiteralPath $prim) -and ((Get-Item -LiteralPath $prim).LastWriteTime -ge $fi.LastWriteTime)) {\n                    Set-State $key $mt 'OK' 'Da co file xuat'; continue\n                }\n            }\n            if ($s -and $s.Status -eq 'OK' -and (($s.Mtime -eq $mt) -or -not $cfg.schedule.reexport)) { continue }\n            if ($s -and $s.Status -ne 'OK' -and $s.Mtime -eq $mt -and -not $Force) {\n                if (($now - [datetime]::Parse($s.At)).TotalHours -lt $cfg.schedule.retryHours) { continue }\n            }\n        }\n        $todo += [pscustomobject]@{ File = $fi; Key = $key; Mtime = $mt }\n    }\n\n    if ($todo.Count -eq 0) {\n        if ($manual -or $Force) { Log 'Khong co file nao can export.' }\n        exit 2\n    }\n    Log (\"=== [{0}] Bat dau: {1} file ===\" -f $cfg.job, $todo.Count)\n\n    # ---------- Khoi dong va ket noi InDesign ----------\n    $launched = $false\n    if (-not (Get-Process -Name 'InDesign' -ErrorAction SilentlyContinue)) {\n        $exe = $null\n        try {\n            $pid0 = $cfg.inDesign.progId; $k = \"Registry::HKEY_CLASSES_ROOT\\$pid0\"\n            if (-not (Test-Path -LiteralPath \"$k\\CLSID\") -and (Test-Path -LiteralPath \"$k\\CurVer\")) {\n                $pid0 = (Get-ItemProperty -LiteralPath \"$k\\CurVer\").'(default)'; $k = \"Registry::HKEY_CLASSES_ROOT\\$pid0\"\n            }\n            $clsid = (Get-ItemProperty -LiteralPath \"$k\\CLSID\").'(default)'\n            $srv = (Get-ItemProperty -LiteralPath \"Registry::HKEY_CLASSES_ROOT\\CLSID\\$clsid\\LocalServer32\").'(default)'\n            if ($srv -match '\"?([^\"]+?\\.exe)') { $exe = $Matches[1] }\n        } catch { }\n        if ($exe -and (Test-Path -LiteralPath $exe)) {\n            Log \"Dang khoi dong InDesign: $exe\"\n            Start-Process -FilePath $exe; $launched = $true\n            Start-Sleep -Seconds 20\n        }\n    }\n    $id = $null\n    $deadline = (Get-Date).AddSeconds($cfg.inDesign.startupWaitSeconds)\n    while (-not $id) {\n        try { $id = New-Object -ComObject $cfg.inDesign.progId }\n        catch {\n            if ((Get-Date) -gt $deadline) {\n                Log (\"Khong ket noi duoc InDesign: \" + $_.Exception.Message)\n                Log \"Kiem tra: InDesign co dang hien hop thoai nao khong? Co dat 'Run as administrator' khong?\"\n                exit 1\n            }\n            Log 'InDesign chua san sang, cho them...'; Start-Sleep -Seconds 15\n        }\n    }\n    $JS = 1246973031  # idScriptLanguage.idJavascript\n\n    # ---------- Copy sang noi khac ----------\n    function Copy-Outputs($fi, $outs, $dir) {\n        if (-not $cfg.after.copy.enabled) { return }\n        $target = $cfg.after.copy.path\n        if (-not (Test-Path -LiteralPath $target)) { Log \"        Khong copy: khong thay $target\"; return }\n        if ($cfg.after.copy.rule -eq 'samefolder') {\n            $want = Norm $fi.Directory.Name\n            $hits = @(Get-ChildItem -LiteralPath $target -Directory -Recurse -Depth 3 -ErrorAction SilentlyContinue | Where-Object { (Norm $_.Name) -eq $want })\n            if ($hits.Count -ne 1) { Log (\"        Khong copy: tim thay {0} thu muc ten '{1}' o dich\" -f $hits.Count, $fi.Directory.Name); return }\n            $target = $hits[0].FullName\n        }\n        foreach ($o in $outs) {\n            $t = $target\n            $parent = Split-Path -Parent $o\n            if ($parent -ne $dir) { $t = Join-Path $target (Split-Path -Leaf $parent); if (-not (Test-Path -LiteralPath $t)) { New-Item -ItemType Directory -Path $t | Out-Null } }\n            Copy-Item -LiteralPath $o -Destination $t -Force\n        }\n        Log \"        Da copy $($outs.Count) file sang $target\"\n    }\n\n    # ---------- Xu ly tung file ----------\n    $ok = 0; $skip = 0; $later = 0; $fail = 0\n    $skipIfOpen = if ($Force -or $manual -or $cfg.errors.openDoc -eq 'export') { '0' } else { '1' }\n    foreach ($t in $todo) {\n        $fi = $t.File\n        try {\n            $dir = Get-OutDir $fi\n            $id.ScriptArgs.SetValue('cfg', $cfgArg)\n            $id.ScriptArgs.SetValue('inddPath', $fi.FullName)\n            $id.ScriptArgs.SetValue('stem', (Get-Stem $fi $dir))\n            $id.ScriptArgs.SetValue('skipIfOpen', $skipIfOpen)\n            $res = [string]$id.DoScript($jsx, $JS)\n            $id.ScriptArgs.Clear()\n\n            $lines = @($res -split \"`r?`n\")\n            $status = $lines[0].Trim()\n            $outs = @($lines | Where-Object { $_ -like 'OUT:*' } | ForEach-Object { $_.Substring(4) })\n            $warns = @($lines | Where-Object { $_ -like 'WARN:*' } | ForEach-Object { $_.Substring(5) })\n            $msg = (@($lines | Where-Object { $_ -like 'MSG:*' } | ForEach-Object { $_.Substring(4) }) -join ' ; ')\n\n            switch ($status) {\n                'OK' {\n                    Log (\"OK      {0}  ({1} file)\" -f $fi.FullName, $outs.Count)\n                    foreach ($w in $warns) { Log \"        Canh bao: $w\" }\n                    Copy-Outputs $fi $outs $dir\n                    Set-State $t.Key $t.Mtime 'OK' ''\n                    $ok++\n                }\n                'SKIP' { Log \"BO QUA  $($fi.FullName)  ($msg)\"; Set-State $t.Key $t.Mtime 'SKIP' $msg; $skip++ }\n                'OPEN' { Log \"DE SAU  $($fi.FullName)  (dang mo trong InDesign)\"; $later++ }\n                default { throw $msg }\n            }\n        } catch {\n            Log (\"LOI     {0}  ({1})\" -f $fi.FullName, $_.Exception.Message)\n            Set-State $t.Key $t.Mtime 'ERROR' $_.Exception.Message\n            $fail++\n        }\n    }\n    Log (\"=== Xong: {0} thanh cong, {1} bo qua, {2} de sau, {3} loi ===\" -f $ok, $skip, $later, $fail)\n    $exitCode = if ($fail -gt 0) { 1 } else { 0 }\n\n    if ($launched -and $cfg.after.closeInDesign) {\n        Log 'Dong InDesign (script da tu mo).'\n        try { $id.DoScript('app.quit(SaveOptions.NO)', $JS) | Out-Null } catch { }\n    }\n}\nfinally {\n    $mutex.ReleaseMutex()\n}\nexit $exitCode\n", "sched": "# Dang ky lich tu dong trong Windows Task Scheduler (doc thong so tu config.json)\n$ErrorActionPreference = 'Stop'\n$here = Split-Path -Parent $MyInvocation.MyCommand.Path\n$cfg = Get-Content -LiteralPath (Join-Path $here 'config.json') -Raw -Encoding UTF8 | ConvertFrom-Json\n$ps1 = Join-Path $here 'export_job.ps1'\n$taskName = 'IDExport - ' + $cfg.jobSlug\n\n$action = New-ScheduledTaskAction -Execute 'powershell.exe' `\n    -Argument (\"-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `\"{0}`\"\" -f $ps1) -WorkingDirectory $here\n$trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) `\n    -RepetitionInterval (New-TimeSpan -Minutes $cfg.schedule.intervalMinutes)\n$settings = New-ScheduledTaskSettingsSet -MultipleInstances IgnoreNew -StartWhenAvailable `\n    -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Hours 6)\n$principal = New-ScheduledTaskPrincipal -UserId (\"{0}\\{1}\" -f $env:USERDOMAIN, $env:USERNAME) -LogonType Interactive -RunLevel Limited\n\nRegister-ScheduledTask -TaskName $taskName -Action $action -Trigger $trigger -Settings $settings -Principal $principal -Force | Out-Null\nWrite-Host (\"Da bat tu dong '{0}': quet moi {1} phut, bat dau sau 1 phut.\" -f $taskName, $cfg.schedule.intervalMinutes)\n"};
+
+// ================= Bộ sinh script =================
+const QJ={"Thấp":"LOW","Trung bình":"MEDIUM","Cao":"HIGH","Tối đa":"MAXIMUM"};
+const rng=s=>{ s=String(s||"").trim(); return (!s||/^tất cả$/i.test(s))?"":s; };
+const num=(s,d)=>{ const n=parseFloat(s); return isFinite(n)?n:d; };
+function slugOf(s){ return String(s||"export").normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/đ/g,"d").replace(/Đ/g,"D").replace(/[^A-Za-z0-9]+/g,"_").replace(/^_|_$/g,"")||"export"; }
+function buildConfig(){
+  const f=V.formats||[], img=has(f,"JPG")||has(f,"PNG"), auto=has(V.trigger,"Tự động theo lịch");
+  return {
+    job: V.job||"Export", jobSlug: slugOf(V.job),
+    roots: String(V.root||"").split(/\r?\n/).map(s=>s.trim()).filter(Boolean),
+    recurse: V.recurse==="Có",
+    pattern: String(V.pattern||"").trim()||"*.indd",
+    exclude: String(V.exclude||"").split(",").map(s=>s.trim()).filter(Boolean),
+    formats: {
+      interactive: has(f,"Interactive PDF")?{spreads:V.ia_layout.includes("Spreads"),range:rng(V.ia_range),res:num(V.ia_res,144),quality:QJ[V.ia_q]||"HIGH",fullscreen:V.ia_view==="Có"}:null,
+      print: has(f,"Print PDF")?{preset:V.pp_preset||"[High Quality Print]",spreads:V.pp_layout.includes("Spreads"),range:rng(V.pp_range),
+        bleedMode:V.pp_bleed==="Tự đặt"?"custom":"document",bleedMm:num(V.pp_bleedmm,3),
+        marks:{crop:has(V.pp_marks,"Crop marks"),reg:has(V.pp_marks,"Registration marks"),bars:has(V.pp_marks,"Color bars"),info:has(V.pp_marks,"Page information")},
+        minPpi:num(V.pp_ppi,0),rgb:{"Không kiểm":"off","Cảnh báo":"warn","Bỏ qua file":"skip"}[V.pp_rgb]||"off"}:null,
+      jpg: has(f,"JPG"), png: has(f,"PNG"),
+      images: img?{spreads:V.img_unit==="Một trải đôi",res:num(V.img_res,150),quality:QJ[V.img_q]||"HIGH",color:{"RGB":"RGB","CMYK":"CMYK","Gray":"GRAY"}[V.img_color]||"RGB",subfolder:V.img_folder==="Có"}:null
+    },
+    naming: {prefix:V.prefix||"",suffix:V.suffix||"",addDate:V.date!=="Không"},
+    dest: {mode:{"Cạnh file .indd":"beside","Thư mục con trong cùng thư mục":"subfolder","Một thư mục cố định":"fixed"}[V.dest]||"beside",sub:V.destsub||"Export",fixed:V.destfix||""},
+    dup: V.dup==="Ghi đè"?"overwrite":"timestamp",
+    errors: {missingLinks:V.e_link==="Bỏ qua file"?"skip":"warn",missingFonts:V.e_font==="Bỏ qua file"?"skip":"warn",
+      overset:{"Không kiểm":"off","Cảnh báo":"warn","Bỏ qua file":"skip"}[V.e_overset]||"off",preflightProfile:String(V.e_preflight||"").trim(),
+      openDoc:V.e_open==="Vẫn xuất"?"export":"later"},
+    schedule: {auto, intervalMinutes:Math.max(5,num(V.interval,30)), minAgeMinutes:num(V.minage,5), retryHours:num(V.retry,24), reexport:V.reexport==="Tự export lại"},
+    after: {closeInDesign:V.close==="Có", copy:{enabled:V.copyto!=="Không",path:V.copypath||"",rule:V.copyrule==="Thẳng vào thư mục đích"?"direct":"samefolder"}},
+    inDesign: {progId:"InDesign.Application",startupWaitSeconds:600}
+  };
+}
+function problems(c){
+  const p=[];
+  if(!c.roots.length && !has(V.trigger,"Kéo thả file vào")) p.push("Chưa có thư mục gốc (mục B)");
+  if(!c.formats.interactive&&!c.formats.print&&!c.formats.jpg&&!c.formats.png) p.push("Chưa chọn định dạng xuất (mục C)");
+  if(c.dest.mode==="fixed"&&!c.dest.fixed) p.push("Chưa có đường dẫn thư mục cố định (mục D)");
+  if(c.after.copy.enabled&&!c.after.copy.path) p.push("Chưa có đường dẫn đích để copy (mục G)");
+  if(!(V.trigger||[]).length) p.push("Chưa chọn cách kích hoạt (mục F)");
+  return p;
+}
+const crlf=s=>s.replace(/\r?\n/g,"\r\n");
+function guide(c){
+  const t=V.trigger||[], L=[];
+  L.push(`HƯỚNG DẪN CÀI ĐẶT — ${c.job}`,"",`Thư mục đặt script đề xuất: ${V.installdir||"(tự chọn)"}`,"");
+  L.push("1. Giải nén toàn bộ file trong zip vào thư mục trên. Không đổi tên các file.");
+  L.push("2. Chuột phải từng file .bat và .ps1 → Properties → tích Unblock (nếu có) → OK.");
+  L.push("   Bỏ qua bước này, Windows sẽ hiện cảnh báo bảo mật và chế độ tự động sẽ bị chặn.");
+  let n=3;
+  if(has(t,"Bấm đúp để chạy ngay")) L.push(`${n++}. Bấm đúp chay_ngay.bat để chạy thử. Xem kết quả trên cửa sổ đen và trong log.txt.`);
+  if(has(t,"Kéo thả file vào")) L.push(`${n++}. Kéo file .indd (hoặc cả thư mục) thả vào keo_tha.bat để export riêng các file đó.`);
+  if(c.schedule.auto) L.push(`${n++}. Chạy thử ổn thì bấm đúp cai_tu_dong.bat: máy tự quét mỗi ${c.schedule.intervalMinutes} phút. Tắt bằng tat_tu_dong.bat.`);
+  L.push("","GHI CHÚ");
+  L.push("- Máy phải bật và đang đăng nhập Windows thì việc tự động mới chạy (khóa màn hình vẫn được).");
+  L.push("- InDesign đang tắt thì script tự mở và chờ tối đa 10 phút cho InDesign khởi động.");
+  L.push("- Đừng xóa state.json: đó là danh sách file đã xử lý.");
+  L.push("- Muốn đổi thông số: sửa config.json, hoặc điền lại phiếu và tải bộ mới, chép đè config.json.");
+  if(c.formats.interactive&&c.formats.print) L.push("- Xuất cả hai loại PDF: bản in có thêm _PRINT ở cuối tên.");
+  if(String(V.notes||"").trim()) L.push("","YÊU CẦU KHÁC (chưa có trong bộ script, gửi Claude để làm thêm):",String(V.notes).trim());
+  return "﻿"+crlf(L.join("\n"))+"\r\n";
+}
+function download(blob,name){
+  const url=URL.createObjectURL(blob); const a=document.createElement("a");
+  a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);
+}
+async function buildZip(){
+  const c=buildConfig(), p=problems(c);
+  if(p.length){ toast("Chưa tải được: "+p.join("; ")+"."); return; }
+  if(typeof JSZip==="undefined"){ toast("Không tải được thư viện nén. Kiểm tra mạng rồi thử lại."); return; }
+  const z=new JSZip(), dir=z.folder("IDExport_"+c.jobSlug), t=V.trigger||[];
+  dir.file("config.json", JSON.stringify(c,null,2));
+  dir.file("export_job.jsx", crlf(TPL.jsx));
+  dir.file("export_job.ps1", crlf(TPL.ps1));
+  const bat=(cmd,note)=>crlf(`@echo off\nchcp 65001 >nul\nrem ${note}\n${cmd}\npause\n`);
+  const run=`powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0export_job.ps1"`;
+  if(has(t,"Bấm đúp để chạy ngay")) dir.file("chay_ngay.bat", bat(run+" -Force","Bam dup de quet va export ngay"));
+  if(has(t,"Kéo thả file vào")) dir.file("keo_tha.bat", bat(run+" %*","Keo tha file .indd hoac thu muc vao day"));
+  if(c.schedule.auto){
+    dir.file("cai_tu_dong.ps1", crlf(TPL.sched));
+    dir.file("cai_tu_dong.bat", bat(`powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0cai_tu_dong.ps1"`,"Bam dup de bat che do tu dong"));
+    dir.file("tat_tu_dong.bat", bat(`powershell -NoProfile -Command "Unregister-ScheduledTask -TaskName 'IDExport - ${c.jobSlug}' -Confirm:$false; Write-Host 'Da tat tu dong.'"`,"Bam dup de tat che do tu dong"));
+  }
+  dir.file("HUONG_DAN.txt", guide(c));
+  dir.file("PHIEU.txt", "﻿"+crlf(document.getElementById("out").textContent));
+  const blob=await z.generateAsync({type:"blob",compression:"DEFLATE"});
+  download(blob,`IDExport_${c.jobSlug}.zip`);
+  toast(`Đã tải IDExport_${c.jobSlug}.zip — mở HUONG_DAN.txt bên trong để cài.`);
+}
+
+// ---------- Nút ----------
+const toast=m=>{const t=document.getElementById("toast"); t.textContent=m; clearTimeout(t._h); t._h=setTimeout(()=>t.textContent="",3000);};
+document.getElementById("btn-copy").addEventListener("click",()=>{
+  const txt=document.getElementById("out").textContent;
+  const fallback=()=>{const r=document.createRange(); r.selectNodeContents(document.getElementById("out")); const s=getSelection(); s.removeAllRanges(); s.addRange(r); toast("Đã bôi đen phiếu, bấm Ctrl+C để sao chép.");};
+  try{ navigator.clipboard.writeText(txt).then(()=>toast("Đã sao chép."),fallback); }catch(e){ fallback(); }
+});
+
+document.getElementById("btn-dl").addEventListener("click",()=>{
+  const txt=document.getElementById("out").textContent.replace(/\n/g,"\r\n");
+  const slug=String(V.job||"export").normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/đ/g,"d").replace(/Đ/g,"D").replace(/[^A-Za-z0-9]+/g,"_").replace(/^_|_$/g,"")||"export";
+  const d=new Date(), p=n=>String(n).padStart(2,"0");
+  const name=`Phieu_${slug}_${d.getFullYear()}${p(d.getMonth()+1)}${p(d.getDate())}.txt`;
+  const url=URL.createObjectURL(new Blob(["\ufeff"+txt],{type:"text/plain;charset=utf-8"}));
+  const a=document.createElement("a"); a.href=url; a.download=name; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);
+  toast("Đã tải "+name);
+});
+document.getElementById("btn-zip").addEventListener("click",()=>{ buildZip().catch(e=>toast("Lỗi khi tạo zip: "+e.message)); });
+let armed=false;
+document.getElementById("btn-reset").addEventListener("click",e=>{
+  if(!armed){ armed=true; e.target.textContent="Bấm lần nữa để xác nhận"; setTimeout(()=>{armed=false; e.target.textContent="Điền lại mặc định";},3000); return; }
+  armed=false; e.target.textContent="Điền lại mặc định";
+  V=JSON.parse(JSON.stringify(defaults)); save(); fill(); update(); toast("Đã điền lại mặc định.");
+});
+
+fill(); update();
+</script>
+</body>
+</html>
